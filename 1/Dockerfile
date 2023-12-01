@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY index.js .
 
-ENTRYPOINT ["javascript", "node.js"]
+ENTRYPOINT ["node", "node.js"]
