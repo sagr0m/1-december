@@ -4,6 +4,7 @@ on: [push]
   
 jobs:
   build:
+    name: builder
     runs-on: ubuntu-latest
     steps:
       - name: firstStep
