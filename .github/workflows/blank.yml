@@ -1,0 +1,73 @@
+name: CI
+
+on: [push]
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: firstStep
+        uses: actions/checkout@v4
+
+      - name: secondStep
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: docker build -t ghcr.io/sagr0m/js:1.0 ./1
+      - run: docker push ghcr.io/sagr0m/js:1.0
+      - run: docker build -t ghcr.io/sagr0m/json:1.0 ./2
+      - run: docker push ghcr.io/sagr0m/json:1.0
+  docker_run:
+    needs: [build]
+    name: docker_run
+    runs-on: ubuntu-latest
+    steps:
+      - name: firstStep
+        uses: actions/checkout@v4
+
+      - name: secondStep
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: docker pull ghcr.io/sagr0m/js:1.0
+      - run: docker run ghcr.io/sagr0m/js:1.0
+      - run: docker pull ghcr.io/sagr0m/json:1.0
+      - run: docker run ghcr.io/sagr0m/json:1.0
+  web_run:
+    runs-on: ubuntu-latest
+    needs: [docker_run]
+    name: web
+    steps:
+      - name: Run check js
+        run: npx prettier --check "*.js”
+      - name: Run code
+        run: |
+              version: "3.7"
+              services:
+                webserver:
+                  container_name: webserver
+                  restart: unless-stopped
+                  image: nginx
+                  ports:
+                    - 4040:80
+                    - 4141:443
+                database:
+                  container_name: database
+                  restart: unless-stopped
+                  image: mysql
+                  environment:
+                    MYSQL_ROOT_PASSWORD: root
+                pma:
+                  container_name: pma
+                  restart: unless-stopped
+                  image: phpmyadmin
+                  ports:
+                    - 5050:80
+                  depends_on:
+                    - database
+                  links:
+                    - database:db
