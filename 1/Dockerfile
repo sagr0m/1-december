@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY index.js .
 
-RUN ["javascript", "node"]
+RUN ["js", "node.js"]
