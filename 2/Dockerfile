@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY package.json .
 
-RUN ["javascript", "node.json"]
+RUN ["javascript", "node.js"]
