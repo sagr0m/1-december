@@ -1,6 +1,6 @@
 FROM package
 
-WORKDIR ./2
+WORKDIR /app
 
 COPY package.json .
 
