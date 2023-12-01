@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  webserver:
+    container_name: webserver
+    restart: unless-stopped
+    image: nginx
+    ports:
+      - 4040:80
+      - 4141:443
+  database:
+    container_name: database
+    restart: unless-stopped
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+  pma:
+    container_name: pma
+    restart: unless-stopped
+    image: phpmyadmin
+    ports:
+      - 5050:80
+    depends_on:
+      - database
+    links:
+      - database:db
