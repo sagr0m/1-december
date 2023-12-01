@@ -1,6 +1,6 @@
 FROM index
 
-WORKDIR /app
+WORKDIR /./1
 
 COPY index.js .
 
