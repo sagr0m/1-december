@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY package.json .
 
-ENTRYPOINT ["node", "node.js"]
+ENTRYPOINT ["node", "node.json"]
