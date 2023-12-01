@@ -1,7 +1,7 @@
-FROM package
+FROM node
 
 WORKDIR /app
 
 COPY package.json .
 
-RUN ["javascript", "package.json"]
+RUN ["javascript", "node.json"]
